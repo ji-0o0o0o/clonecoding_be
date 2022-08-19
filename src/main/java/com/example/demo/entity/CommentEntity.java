@@ -1,19 +1,22 @@
 package com.example.demo.entity;
 
+import com.example.demo.util.Time;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
-public class CommentEntity {
+public class CommentEntity extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
+
+    @Column(nullable = false)
+    private String comment;
+
+
 
 
 

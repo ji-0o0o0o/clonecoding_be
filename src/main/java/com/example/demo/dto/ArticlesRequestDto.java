@@ -19,7 +19,7 @@ public class ArticlesRequestDto {
 
     public ArticlesRequestDto(Articles articles) {
         this.image = articles.getImage();
-        this.userName = articles.getUserName();
+        this.userName = articles.getUsername();
         this.likeCount = articles.getLikeCount();
         this.content = articles.getContent();
         this.createAt = articles.getCreatedAt();

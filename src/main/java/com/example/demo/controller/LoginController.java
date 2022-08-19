@@ -6,6 +6,7 @@ import com.example.demo.entity.User;
 import com.example.demo.jwt.JwtFilter;
 import com.example.demo.jwt.TokenProvider;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.CustomUserDetailsService;
 import com.example.demo.util.UserEmailPasswordAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -33,12 +34,14 @@ public class LoginController {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     private final UserRepository userRepository;
+    private final CustomUserDetailsService customUserDetailsService;
 
     public LoginController(TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder,
-                           UserRepository  userRepository) {
+                           UserRepository  userRepository, CustomUserDetailsService customUserDetailsService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
         this.userRepository = userRepository;
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     //username, password를 파라미터로 받아서 UsernamePasswordAuthenticationToken 객체를 생성합니다.
@@ -49,8 +52,7 @@ public class LoginController {
 
 
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
-
+                new UsernamePasswordAuthenticationToken(loginDto.getUserName(), loginDto.getPassword());
 
 //
 //        UserEmailPasswordAuthenticationToken authenticationToken =

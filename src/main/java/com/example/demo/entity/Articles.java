@@ -21,7 +21,7 @@ public class Articles extends Timestamped{
     private Long articlesId;
 
     @Column(nullable = false)
-    private String userName;
+    private String username;
 
     @Column(nullable = false)// length = ?
     private String content;

@@ -2,7 +2,11 @@ package com.example.demo.service;
 
 
 
+import com.example.demo.entity.UserAccount;
 import com.example.demo.repository.UserRepository;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -12,6 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.Collections;
 
 @Service
@@ -26,16 +31,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.example.demo.entity.User target = userRepository.findbyUserEmail(username).orElse(null);
 
+        com.example.demo.entity.User target = userRepository.findByUserEmail(username).orElse(null);
         if (target == null) {
-            userRepository.findbyUserId(username).orElseThrow(
-                    () -> new IllegalArgumentException("존재하지 않습니다.")
+
+            target = userRepository.findByUserId(username).orElseThrow(
+                    () -> new IllegalArgumentException("이메일이 존재하지 않습니다.")
             );
         }
-        return userRepository.findbyUserEmail(username)
-                .map(user -> createUser(username, user))
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 해당 유저를 찾을 수 없습니다."));
+
+//         return userRepository.findOneWithAuthorityEntityByUserName(username)
+//                .map(user -> createUser(username, user))
+//                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 해당 유저를 찾을 수 없습니다."));
+        return new UserAccount(target);
     }
 
 
