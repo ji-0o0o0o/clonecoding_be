@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -28,10 +26,19 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthorityEntityByUserName(username)
+        com.example.demo.entity.User target = userRepository.findbyUserEmail(username).orElse(null);
+
+        if (target == null) {
+            userRepository.findbyUserId(username).orElseThrow(
+                    () -> new IllegalArgumentException("존재하지 않습니다.")
+            );
+        }
+        return userRepository.findbyUserEmail(username)
                 .map(user -> createUser(username, user))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> 해당 유저를 찾을 수 없습니다."));
     }
+
+
 
 
     private User createUser(String username, com.example.demo.entity.User user) {

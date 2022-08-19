@@ -2,6 +2,9 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.Articles;
 import lombok.Getter;
+import org.apache.tomcat.jni.Local;
+
+import java.time.LocalDateTime;
 
 @Getter
 public class ArticlesRequestDto {
@@ -11,7 +14,7 @@ public class ArticlesRequestDto {
     private String userName;
     private int likeCount;
     private String content;
-    private String createAt;
+    private LocalDateTime createAt;
     private int CommentCount;
 
     public ArticlesRequestDto(Articles articles) {
@@ -20,6 +23,6 @@ public class ArticlesRequestDto {
         this.likeCount = articles.getLikeCount();
         this.content = articles.getContent();
         this.createAt = articles.getCreatedAt();
-       this.CommentCount = articles.getCommentCount();
+        this.CommentCount = articles.getCommentCount();
     }
 }

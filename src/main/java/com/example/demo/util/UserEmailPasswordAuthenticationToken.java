@@ -1,6 +1,9 @@
 package com.example.demo.util;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
@@ -9,7 +12,7 @@ import org.springframework.util.Assert;
 import java.util.Collection;
 public class UserEmailPasswordAuthenticationToken extends AbstractAuthenticationToken {
 
-    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
+//    private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final Object principal;
 
@@ -19,7 +22,7 @@ public class UserEmailPasswordAuthenticationToken extends AbstractAuthentication
         super(null);
         this.principal = principal;
         this.credentials = credentials;
-        setAuthenticated(true);
+        setAuthenticated(false);
     }
 
     public UserEmailPasswordAuthenticationToken(Object principal, Object credentials,

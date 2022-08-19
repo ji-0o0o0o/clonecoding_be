@@ -3,8 +3,8 @@ package com.example.demo.service.s3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.hanghea99.minispring.model.Article;
-import com.hanghea99.minispring.repository.ArticleRepository;
+import com.example.demo.entity.Articles;
+import com.example.demo.repository.ArticlesRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ import java.util.UUID;
 public class S3Uploader {
 
 	private final AmazonS3Client amazonS3Client;
-	private final ArticleRepository articleRepository;
+	private final ArticlesRepository articleRepository;
 
 	@Value("${cloud.aws.s3.bucket}")
 	private String bucket;
@@ -47,7 +47,7 @@ public class S3Uploader {
 		amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
 		String url = amazonS3Client.getUrl(bucket, fileName).toString();
 
-		Article article = articleRepository.findById(articleId)
+		Articles article = articleRepository.findById(articleId)
 				.orElseThrow(() -> new IllegalArgumentException("해당 게시물이 존재하지 않습니다."));
 		article.setImage(url);
 		articleRepository.save(article);

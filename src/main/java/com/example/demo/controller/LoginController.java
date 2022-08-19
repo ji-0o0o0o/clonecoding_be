@@ -6,10 +6,13 @@ import com.example.demo.entity.User;
 import com.example.demo.jwt.JwtFilter;
 import com.example.demo.jwt.TokenProvider;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.UserEmailPasswordAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -44,8 +47,11 @@ public class LoginController {
     public ResponseEntity<TokenDto> authorize(@RequestBody LoginDto loginDto) {
 
 
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
+
+
 //
 //        UserEmailPasswordAuthenticationToken authenticationToken =
 //                new UserEmailPasswordAuthenticationToken(loginDto.getUserId(), loginDto.getPassword());
@@ -53,8 +59,9 @@ public class LoginController {
 //        authenticationToken.setAuthenticated(true);
 //        List<User> userList = userRepository.findAll();
 //        for (User user : userList) {
-//            user.getUserEmail()
+//            user.getUserEmail();
 //        }
+
 //
 //        if()
 //
