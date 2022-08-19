@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
 
-import java.util.Collections;
 import java.util.Optional;
 
-import com.example.demo.dto.UserDto;
+import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.AuthorityEntity;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -28,9 +27,12 @@ public class UserService {
     //signup 메소드는 이미 같은 username으로 가입된 유저가 있는지 확인하고
     //UserDto객체의 정보들을 기반으로 권한 객체와 유저 객체를 생성하여 DB저장
 
-    public User signup(UserDto userDto) {
-        if (userRepository.findOneWithAuthorityEntityByUsername(userDto.getUsername()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+    public User signup(RegisterDto registerDto) {
+        if (userRepository.findOneWithAuthorityEntityByUserName(registerDto.getUserName()).orElse(null) != null) {
+            throw new RuntimeException("이미 사용중인 아이디입니다.");
+        }
+        if (userRepository.findOneWithAuthorityEntityByUserEmail(registerDto.getUserEmail()).orElse(null) != null) {
+            throw new RuntimeException("이미 사용중인 이메일입니다");
         }
 
         //해당 메소드롤 생성된 유저는 ROLE_USER권한을 소유해서
@@ -40,11 +42,12 @@ public class UserService {
 //                .build();
 
         User user = User.builder()
-                .username(userDto.getUsername())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
-                .authorityEntity(AuthorityEntity.ROLE_USER)
+                .userName(registerDto.getUserName())
+                .userEmail(registerDto.getUserEmail())
+                .userId(registerDto.getUserId())
                 .activated(true)
+                .password(passwordEncoder.encode(registerDto.getPassword()))
+                .authorityEntity(AuthorityEntity.ROLE_USER)
                 .build();
 
         return userRepository.save(user);
@@ -53,13 +56,13 @@ public class UserService {
     @Transactional(readOnly = true)
     //getUserWithAuthorities : username을 파라미터롤 받아 해당유저 정보 및 권한정보 리턴
     public Optional<User> getUserWithAuthorities(String username) {
-        return userRepository.findOneWithAuthorityEntityByUsername(username);
+        return userRepository.findOneWithAuthorityEntityByUserName(username);
     }
 
     @Transactional(readOnly = true)
     //getMyUserWithAuthorities : SecurityUtil의 getCurrentUsername()
     //메소드가 리턴하는 username의 유저 및 권한 정보를 리턴함
     public Optional<User> getMyUserWithAuthorities() {
-        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthorityEntityByUsername);
+        return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthorityEntityByUserName);
     }
 }

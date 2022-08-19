@@ -15,19 +15,22 @@ public class User {
 
     @JsonIgnore
     @Id
-    @Column(name = "user_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
-    @Column(name = "username", length = 50, unique = true)
-    private String username;
+    @Column(name = "userName", length = 50, unique = true)
+    private String userName;
+
+    @Column(name = "userId", length = 50)
+    private String userId;
+
+    @Column(name = "userEmail", length = 50)
+    private String userEmail;
 
     @JsonIgnore
     @Column(name = "password", length = 100)
     private String password;
-
-    @Column(name = "nickname", length = 50)
-    private String nickname;
 
     @JsonIgnore
     @Column(name = "activated")

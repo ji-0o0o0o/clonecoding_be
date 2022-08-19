@@ -28,10 +28,11 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthorityEntityByUsername(username)
+        return userRepository.findOneWithAuthorityEntityByUserName(username)
                 .map(user -> createUser(username, user))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> 해당 유저를 찾을 수 없습니다."));
     }
+
 
     private User createUser(String username, com.example.demo.entity.User user) {
         if (!user.isActivated()) {
@@ -40,6 +41,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         GrantedAuthority grantedAuthorities = new SimpleGrantedAuthority(user.getAuthorityEntity().toString());
 //                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
 //                .collect(Collectors.toList());
-        return new User(user.getUsername(), user.getPassword(), Collections.singleton(grantedAuthorities));
+        return new User(user.getUserName(), user.getPassword(), Collections.singleton(grantedAuthorities));
     }
 }

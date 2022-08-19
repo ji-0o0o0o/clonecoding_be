@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.UserDto;
+import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -11,19 +11,17 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
-public class UserController {
+public class RegisterController {
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public RegisterController(UserService userService) {
         this.userService = userService;
     }
 
     //가입 SecurrityConfig.java에서 permitAll 설정했기때문에 권한없이 가능함
-    @PostMapping("/signup")
-    public ResponseEntity<User> signup(
-            @Valid @RequestBody UserDto userDto
-    ) {
-        return ResponseEntity.ok(userService.signup(userDto));
+    @PostMapping("/register")
+    public ResponseEntity<User> signup(@Valid @RequestBody RegisterDto registerDto) {
+        return ResponseEntity.ok(userService.signup(registerDto));
     }
 
     @GetMapping("/user")
