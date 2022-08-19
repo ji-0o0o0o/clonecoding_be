@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 
-import java.util.Collections;
 import java.util.Optional;
 
 import com.example.demo.dto.UserDto;
@@ -9,6 +8,7 @@ import com.example.demo.entity.AuthorityEntity;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.SecurityUtil;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,12 @@ public class UserService {
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+    }
+
+    public String getSigningUserId(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+//        return Long.valueOf(userId);
+
     }
 
     @Transactional
