@@ -29,11 +29,14 @@ public class Articles extends TimeStamped {
     private String content;
 
 
-    private int likeCount;
-
+    @Column
     private String image;
-    private int CommentCount;
 
+    @Column
+    private Long CommentCount;
+
+    @Column
+    private Long likeCount;
 
 
     public Articles(ArticlesDto articlesDto, String image, String userName) {

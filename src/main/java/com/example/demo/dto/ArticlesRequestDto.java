@@ -2,7 +2,6 @@ package com.example.demo.dto;
 
 import com.example.demo.entity.Articles;
 import lombok.Getter;
-import org.apache.tomcat.jni.Local;
 
 import java.time.LocalDateTime;
 
@@ -12,17 +11,17 @@ public class ArticlesRequestDto {
 
     private String image;
     private String userName;
-    private int likeCount;
+    private Long likeCount;
     private String content;
-    private LocalDateTime createAt;
-    private int CommentCount;
+    private String createAt;
+    private Long CommentCount;
 
-    public ArticlesRequestDto(Articles articles) {
+    public ArticlesRequestDto(Articles articles, String createAt) {
         this.image = articles.getImage();
         this.userName = articles.getUserName();
         this.likeCount = articles.getLikeCount();
         this.content = articles.getContent();
-        this.createAt = articles.getCreatedAt();
+        this.createAt = createAt;
         this.CommentCount = articles.getCommentCount();
     }
 }

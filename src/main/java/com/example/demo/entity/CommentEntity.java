@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.example.demo.util.Time;
 import com.example.demo.util.TimeStamped;
 import lombok.Getter;
 

@@ -25,8 +25,8 @@ public class ArticlesController {
     private final ArticlesService articlesService;
 
     //이미지 등록
-    @PostMapping(value = "/", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public Articles upload(@RequestPart ArticlesDto articlesDto,
+    @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ArticlesRequestDto upload(@RequestPart ArticlesDto articlesDto,
                            @RequestPart MultipartFile multipartFile) throws IOException {
         return articlesService.postArticles(multipartFile, articlesDto);
     }
