@@ -39,7 +39,7 @@ public class ArticlesController {
 
     //메인 상세 페이지 조회
     @GetMapping("/{articlesId}")
-    public List<ArticlesResponseDto> readArticles(@PathVariable Long articlesId){
+    public ArticlesResponseDto readArticles(@PathVariable Long articlesId){
         return articlesService.readArticles(articlesId);
     }
 

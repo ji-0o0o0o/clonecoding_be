@@ -80,25 +80,40 @@ public class ArticlesService {
         return articlesRequestDtoList;
     }
     //메인 상세 페이지 조회
-    public List<ArticlesResponseDto> readArticles(Long articlesId) {
-//        Articles articles = articlesRepository.findById(articlesId)
-//                .orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지않습니다."));
+    public ArticlesResponseDto readArticles(Long articlesId) {
+
+        Articles articles = articlesRepository.findById(articlesId)
+                .orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지않습니다."));
 //        long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
 //        ArticlesResponseDto articlesResponseDto = new ArticlesResponseDto(articles, time.times(rightNow));
 //
 //        return articlesResponseDto;
-        List<Articles> articlesList = articlesRepository.findAllById(Collections.singleton(articlesId));
-        List<ArticlesResponseDto> articlesResponseDtoList = new ArrayList<>();
 
-
-        for (Articles articles:articlesList) {
-
-
-            //  작성시간 조회
-            long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
-            articlesResponseDtoList.add(new ArticlesResponseDto(articles, time.times(rightNow)));
+        List<CommentEntity> commentList = commentRepository.findAll();
+        List<CommentEntity> commentBox = new ArrayList<>();
+        for (CommentEntity datas : commentList) {
+            if (datas.getArticles().equals(articlesId)) {
+                commentBox.add(datas);
+            }
         }
-        return articlesResponseDtoList;
+
+//        작성시간
+        long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
+
+        ArticlesResponseDto articlesResponseDto = new ArticlesResponseDto(articles, time.times(rightNow), commentBox);
+
+//        List<Articles> articlesList = articlesRepository.findAllById(Collections.singleton(articlesId));
+//        List<ArticlesResponseDto> articlesResponseDtoList = new ArrayList<>();
+//
+//
+//        for (Articles articles:articlesList) {
+//
+//
+//            //  작성시간 조회
+//            long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
+//            articlesResponseDtoList.add(new ArticlesResponseDto(articles, time.times(rightNow)));
+//        }
+        return articlesResponseDto;
     }
 
 
