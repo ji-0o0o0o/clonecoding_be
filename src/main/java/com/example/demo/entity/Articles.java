@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.dto.ArticlesDto;
 import com.example.demo.dto.ArticlesRequestDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -21,15 +22,24 @@ public class Articles extends Timestamped{
     private Long articlesId;
 
     @Column(nullable = false)
-    private String username;
+    private String userName;
 
     @Column(nullable = false)// length = ?
     private String content;
 
 
     private int likeCount;
+
     private String image;
     private int CommentCount;
+
+
+
+    public Articles(ArticlesDto articlesDto, String image, String userName) {
+        this.content = articlesDto.getContent();
+        this.image = image;
+        this.userName = userName;
+    }
 
     public void updateArticles(ArticlesRequestDto articlesRequestDto) {
         this.content = articlesRequestDto.getContent();

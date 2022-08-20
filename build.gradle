@@ -29,7 +29,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	//이미지 삽입을 위해
-//	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
 	//오류 해결을 위해 추가로 넣은 의존성
 	runtimeOnly('io.jsonwebtoken:jjwt-jackson:0.11.2')

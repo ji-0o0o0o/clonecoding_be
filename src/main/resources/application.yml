@@ -19,6 +19,17 @@ spring:
         format_sql: true
 #        show_sql: true
 
+  profiles:
+    include:
+      - aws
+      - credentials
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+
 
 #HS512???? ?? secret key 512bit, ? 64byte??? ?????
 jwt:
@@ -26,6 +37,24 @@ jwt:
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   token-validity-in-seconds: 86400
 
-logging:
-  level:
-    me.test: DEBUG
+#logging:
+#  level:
+#    me.test: DEBUG
+
+
+cloud:
+  aws:
+    s3:
+      bucket:
+    region:
+      static:
+    credentials:
+      #            accessKey: 1234
+      #            secretKey: 1234
+
+      accessKey:
+      secretKey:
+
+    stack:
+      auto =false:
+
