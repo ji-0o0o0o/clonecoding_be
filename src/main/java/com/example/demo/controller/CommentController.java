@@ -19,7 +19,7 @@ public class CommentController {
     }
 
     @PostMapping("/api/articles/{id}/comments")
-    public String postComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
+    public CommentEntity postComment(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         return commentService.postComment(id, commentDto);
     }
 }

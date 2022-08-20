@@ -38,6 +38,9 @@ public class Articles extends TimeStamped {
     @Column
     private Long likeCount;
 
+    @JsonIgnore
+    private Boolean isArticlesLike = false;
+
 
     public Articles(ArticlesDto articlesDto, String image, String userName) {
         this.content = articlesDto.getContent();
