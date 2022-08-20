@@ -1,8 +1,10 @@
 package com.example.demo.service;
 
 
+import java.util.List;
 import java.util.Optional;
 
+import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.AuthorityEntity;
 import com.example.demo.entity.User;
@@ -72,4 +74,29 @@ public class UserService {
     public Optional<User> getMyUserWithAuthorities() {
         return SecurityUtil.getCurrentUsername().flatMap(userRepository::findOneWithAuthorityEntityByUserName);
     }
+
+    @Transactional
+    public Boolean validateId(LoginDto loginDto) {
+        List<User> getId = userRepository.findAll();
+        System.out.println(loginDto.getUserName());
+        for (User targets : getId) {
+            if (loginDto.getUserName().equals(targets.getUserId())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Transactional
+    public Boolean validateEmail(LoginDto loginDto) {
+        List<User> target = userRepository.findAll();
+        System.out.println(loginDto.getUserName());
+        for (User targets : target) {
+            if (loginDto.getUserName().equals(targets.getUserEmail())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

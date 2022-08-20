@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 
@@ -38,8 +40,8 @@ public class ArticlesController {
 
     //메인 페이지 수정
     @PatchMapping("/{articlesId}")
-    public String updateArticles(@PathVariable Long articlesId, @RequestBody ArticlesRequestDto articlesRequestDto) {
-        return articlesService.updateArticles(articlesId, articlesRequestDto);
+    public ArticlesRequestDto updateArticles(@PathVariable Long articlesId, @RequestBody ArticlesDto articlesDto) {
+        return articlesService.updateArticles(articlesId, articlesDto);
     }
 
     //메인 페이지 삭제

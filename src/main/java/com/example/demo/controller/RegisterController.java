@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.LoginDto;
 import com.example.demo.dto.RegisterDto;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
@@ -24,18 +25,28 @@ public class RegisterController {
         return ResponseEntity.ok(userService.signup(registerDto));
     }
 
-    @GetMapping("/user")
-    //@PreAuthorize 해당 어노테이션을 이용하여 권한 2개모두 호출가능하게 설정함
-    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
-    //현재 Security Context에 저장되어있는 인증정보의 username을 기준으로 한
-    //유저 정보 및 권한 정보를 리턴하는 API
-    public ResponseEntity<User> getMyUserInfo() {
-        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+    @PostMapping("/register/userId")
+    public Boolean validateId(@RequestBody LoginDto loginDto) {
+        return userService.validateId(loginDto);
+    }
+    @PostMapping("/register/userEmail")
+    public Boolean validateEmail(@RequestBody LoginDto loginDto) {
+        return userService.validateEmail(loginDto);
     }
 
-    @GetMapping("/user/{username}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") //ADMIN 만 호출가능
-    public ResponseEntity<User> getUserInfo(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
-    }
+
+//    @GetMapping("/user")
+//    //@PreAuthorize 해당 어노테이션을 이용하여 권한 2개모두 호출가능하게 설정함
+//    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
+//    //현재 Security Context에 저장되어있는 인증정보의 username을 기준으로 한
+//    //유저 정보 및 권한 정보를 리턴하는 API
+//    public ResponseEntity<User> getMyUserInfo() {
+//        return ResponseEntity.ok(userService.getMyUserWithAuthorities().get());
+//    }
+//
+//    @GetMapping("/user/{username}")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN')") //ADMIN 만 호출가능
+//    public ResponseEntity<User> getUserInfo(@PathVariable String username) {
+//        return ResponseEntity.ok(userService.getUserWithAuthorities(username).get());
+//    }
 }

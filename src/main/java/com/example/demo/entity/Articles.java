@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import com.example.demo.dto.ArticlesDto;
 import com.example.demo.dto.ArticlesRequestDto;
+import com.example.demo.util.TimeStamped;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Articles extends Timestamped{
+public class Articles extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,8 +42,8 @@ public class Articles extends Timestamped{
         this.userName = userName;
     }
 
-    public void updateArticles(ArticlesRequestDto articlesRequestDto) {
-        this.content = articlesRequestDto.getContent();
+    public void updateArticles(ArticlesDto articlesDto) {
+        this.content = articlesDto.getContent();
     }
 
     public void setImage(String url) {

@@ -39,15 +39,17 @@ public class ArticlesService {
 
     //메인 페이지 수정
     @Transactional
-    public String updateArticles(Long articlesId, ArticlesRequestDto articlesRequestDto) {
+    public ArticlesRequestDto updateArticles(Long articlesId, ArticlesDto articlesDto) {
         Articles articles = articlesRepository.findById(articlesId)
                 .orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지않습니다."));
         String user = userService.getSigningUserId();
 
+        ArticlesRequestDto articlesRequestDto = new ArticlesRequestDto(articles);
         if(user.equals(articles.getUserName())){
-            articles.updateArticles(articlesRequestDto);
-            return ResponseEntity.status(HttpStatus.OK).body(articlesRequestDto)+"";//저장한 정보 출력해준다
-        }return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)+"수정 실패하였습니다.";
+            articles.updateArticles(articlesDto);
+//            return ResponseEntity.status(HttpStatus.OK).body(articlesDto).toString()+"";//저장한 정보 출력해준다
+            return articlesRequestDto;
+        }return null;
     }
 
     //메인 페이지 삭제
