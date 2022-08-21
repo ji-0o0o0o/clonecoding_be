@@ -3,8 +3,10 @@ package com.example.demo.entity;
 import com.example.demo.dto.CommentDto;
 import com.example.demo.util.TimeStamped;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +14,11 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Getter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Getter
+
+@Entity
 public class CommentEntity extends TimeStamped {
 
     @Id
@@ -33,6 +36,15 @@ public class CommentEntity extends TimeStamped {
     @Column
     private String userName;
 
+    @ManyToOne
+    @JoinColumn(name = "ARTICLES_ID")
+    @JsonBackReference
+    private Articles articles;
+
+
+    public CommentEntity(CommentDto commentDto) {
+        this.comment = commentDto.getComment();
+    }
 
     public CommentEntity(Articles articles, CommentDto commentDto, String userName) {
         this.articles = articles;
@@ -40,5 +52,5 @@ public class CommentEntity extends TimeStamped {
         this.userName = userName;
     }
 
-
 }
+

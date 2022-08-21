@@ -2,9 +2,12 @@ package com.example.demo.service;
 
 import com.example.demo.dto.ArticlesDto;
 import com.example.demo.dto.ArticlesRequestDto;
+import com.example.demo.dto.ArticlesResponseDto;
 import com.example.demo.entity.Articles;
+import com.example.demo.entity.CommentEntity;
 import com.example.demo.entity.User;
 import com.example.demo.repository.ArticlesRepository;
+import com.example.demo.repository.CommentRepository;
 import com.example.demo.service.s3.S3Uploader;
 import com.example.demo.util.Time;
 import lombok.RequiredArgsConstructor;
@@ -18,24 +21,27 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
+@RequiredArgsConstructor
 @Service
 public class ArticlesService {
 
     private final ArticlesRepository articlesRepository;
+
+    private final CommentRepository commentRepository;
     private final UserService userService;
     private final S3Uploader s3Uploader;
     private final Time time;
 
 
-    public ArticlesService(ArticlesRepository articlesRepository, UserService userService, S3Uploader s3Uploader,
-                           Time time) {
-        this.articlesRepository = articlesRepository;
-        this.userService = userService;
-        this.s3Uploader = s3Uploader;
-        this.time = time;
-    }
+//    public ArticlesService(ArticlesRepository articlesRepository, UserService userService, S3Uploader s3Uploader,
+//                           Time time) {
+//        this.articlesRepository = articlesRepository;
+//        this.userService = userService;
+//        this.s3Uploader = s3Uploader;
+//        this.time = time;
+//    }
 
     private Long getTime() {
         Articles articles = new Articles();
@@ -58,19 +64,59 @@ public class ArticlesService {
         return articlesRequestDto;
 
     }
-
+    // 메인 페이지 작성글 목록 조회
     public List<ArticlesRequestDto> readAllArticles() {
         List<Articles> articlesList = articlesRepository.findAllByOrderByCreatedAtDesc();
         List<ArticlesRequestDto> articlesRequestDtoList = new ArrayList<>();
 
 
         for (Articles articles:articlesList) {
-//            작성시간 조회
+
+
+        //  작성시간 조회
             long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
             articlesRequestDtoList.add(new ArticlesRequestDto(articles, time.times(rightNow)));
         }
         return articlesRequestDtoList;
     }
+    //메인 상세 페이지 조회
+    public ArticlesResponseDto readArticles(Long articlesId) {
+
+        Articles articles = articlesRepository.findById(articlesId)
+                .orElseThrow(()->new IllegalArgumentException("해당 게시물이 존재하지않습니다."));
+//        long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
+//        ArticlesResponseDto articlesResponseDto = new ArticlesResponseDto(articles, time.times(rightNow));
+//
+//        return articlesResponseDto;
+
+        List<CommentEntity> commentList = commentRepository.findAll();
+        List<CommentEntity> commentBox = new ArrayList<>();
+        for (CommentEntity datas : commentList) {
+            if (datas.getArticles().equals(articlesId)) {
+                commentBox.add(datas);
+            }
+        }
+
+//        작성시간
+        long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
+
+        ArticlesResponseDto articlesResponseDto = new ArticlesResponseDto(articles, time.times(rightNow), commentBox);
+
+//        List<Articles> articlesList = articlesRepository.findAllById(Collections.singleton(articlesId));
+//        List<ArticlesResponseDto> articlesResponseDtoList = new ArrayList<>();
+//
+//
+//        for (Articles articles:articlesList) {
+//
+//
+//            //  작성시간 조회
+//            long rightNow = ChronoUnit.MINUTES.between(articles.getCreatedAt(), LocalDateTime.now());
+//            articlesResponseDtoList.add(new ArticlesResponseDto(articles, time.times(rightNow)));
+//        }
+        return articlesResponseDto;
+    }
+
+
 
     //메인 페이지 수정
 

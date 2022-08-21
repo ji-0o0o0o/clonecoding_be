@@ -11,6 +11,7 @@ import java.util.List;
 public interface ArticlesRepository extends JpaRepository<Articles, Long> {
     List<Articles> findAllByOrderByCreatedAtDesc();
 
+
     @Transactional
     @Modifying
     @Query("update Articles m set m.likeCount = m.likeCount+1 where m.articlesId = :id")

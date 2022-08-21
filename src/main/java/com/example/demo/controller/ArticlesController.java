@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.ArticlesDto;
 import com.example.demo.dto.ArticlesRequestDto;
+import com.example.demo.dto.ArticlesResponseDto;
 import com.example.demo.entity.Articles;
 import com.example.demo.service.ArticlesService;
 import com.example.demo.service.s3.S3Uploader;
@@ -24,7 +25,7 @@ public class ArticlesController {
 
     private final ArticlesService articlesService;
 
-    //이미지 등록
+    //메인 페이지 게시글 작성, 이미지 등록
     @PostMapping(value = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ArticlesRequestDto upload(@RequestPart ArticlesDto articlesDto,
                            @RequestPart MultipartFile multipartFile) throws IOException {
@@ -36,7 +37,12 @@ public class ArticlesController {
         return articlesService.readAllArticles();
     }
 
-    //메인 페이지 게시글 작성
+    //메인 상세 페이지 조회
+    @GetMapping("/{articlesId}")
+    public ArticlesResponseDto readArticles(@PathVariable Long articlesId){
+        return articlesService.readArticles(articlesId);
+    }
+
 
     //메인 페이지 수정
     @PatchMapping("/{articlesId}")

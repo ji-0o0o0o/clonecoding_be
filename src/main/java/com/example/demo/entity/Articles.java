@@ -1,15 +1,13 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.ArticlesDto;
-import com.example.demo.dto.ArticlesRequestDto;
 import com.example.demo.util.TimeStamped;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
 import javax.persistence.*;
+import javax.xml.stream.events.Comment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +30,18 @@ public class Articles extends TimeStamped {
     @Column
     private String image;
 
-    @Column
-    private Long CommentCount;
 
     @Column
-    private Long likeCount;
+    private Long likeCount=0L;
+
+    @Column
+    private long commentCount=0L;
+
+
+
+    @ManyToOne()
+    @JoinColumn
+    @JsonBackReference
 
     @JsonIgnore
     private Boolean isArticlesLike = false;
@@ -56,11 +61,20 @@ public class Articles extends TimeStamped {
         this.image = url;
     }
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JsonManagedReference
-//    private List<Comment> commentList = new ArrayList<>();
-//
+    @OneToMany(cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<CommentEntity> commentList = new ArrayList<>();
+
+    public void addComment(CommentEntity comment) {
+        this.commentList.add(comment);
+    }
+
+    public void setCommentCount(long commentCount) {
+        this.commentCount = commentCount;
+    }
+
 //    @OneToMany(mappedBy = "article") //생성 삭제가 많이 일어나니까 mappedBy
 //    @JsonIgnore
 //    private List<Like> likeList = new ArrayList<>();
+
 }
